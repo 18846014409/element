@@ -12,7 +12,7 @@ export default defineStore('cart', () => {
     //将商品添加到购物车的方法
 
     let addToCart = item => {
-        console.log(item)
+        // console.log(item)
 
         //通过item到productStore中查找
         let productTarget = productStore.products.find(productItem => productItem.id === item.id)

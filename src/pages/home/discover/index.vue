@@ -39,7 +39,7 @@ axios.get('/api/weather/getWeather?count=3', {
 
 })
     .then(res => {
-        console.log(res)
+        // console.log(res)
     })
 
 
@@ -56,7 +56,7 @@ axios.post('/api/users/login', {
         'content-type': 'balablabalabala'
     }
 }).then(res => {
-    console.log(res)
+    // console.log(res)
 })
 
 

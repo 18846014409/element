@@ -8,6 +8,10 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 //引入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+
+import 'nprogress/nprogress.css'
+
+
 //引入全局css文件
 
 // import "@/assets/styles/el-reset.css"

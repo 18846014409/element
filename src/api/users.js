@@ -18,3 +18,18 @@ export let loginApi = (username, password) => http.post('/users/login', { userna
 //获取登入日志
 
 export let getLoginLogApi = (page = 1, count = 5) => http.get(`/getloginlog?page=${page}&count=${count}`)
+
+
+// 获取验证码
+export let getCaptchaApi = ()=>http.get('/users/getCaptcha?v=next')
+
+/**
+ * 
+ * @param {String} captcha
+ * @returns {Promise}
+ * 
+ */
+
+//校验验证码
+export let verifyCaptchaApi=(captcha)=>http.get('/users/verifyCaptcha?captcha='+captcha)
+

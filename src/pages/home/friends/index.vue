@@ -23,7 +23,7 @@ let route = useRoute()
 
 //获取动态路由参数
 
-console.log(route.params)
+// console.log(route.params)
 
 
 //编程式导航返回上一页

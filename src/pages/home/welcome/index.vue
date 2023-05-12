@@ -19,7 +19,7 @@ import { onMounted } from "vue"
 onMounted(() => {
     getLoginLogApi()
         .then(res => {
-            console.log(res)
+            // console.log(res)
         })
 })
 
