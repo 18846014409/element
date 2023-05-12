@@ -100,7 +100,7 @@ video{
   
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+// import type { FormInstance, FormRules } from 'element-plus'
 //创建引用
 const loginFormRef = ref()
 
