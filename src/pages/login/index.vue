@@ -17,7 +17,8 @@
             <el-form-item label="验证码" prop="captcha">
                 <el-input maxlength="5" @keydown.enter="submitForm(loginFormRef)" v-model="loginForm.captcha"
                     class="auto_code" />
-                <i v-html="captcha" class="captcha" style="cursor:pointer;border:1px solid;" @click="getCaptcha" v-loading="captchaLoading"></i>
+                <i v-html="captcha" class="captcha" style="cursor:pointer;border:1px solid;" @click="getCaptcha"
+                    v-loading="captchaLoading"></i>
 
             </el-form-item>
 
@@ -58,8 +59,6 @@ video {
 
 .login-loginForm .el-input {
     width: 200px;
-    padding-bottom: 10px;
-    border-radius: 40px;
 }
 
 .login-container {
@@ -71,7 +70,7 @@ video {
     border-radius: 30px;
     width: 400px;
     background-color: rgba(0, 0, 0, .2);
-    padding: 50px 0 100px 0;
+    padding: 50px 0 50px 0;
 }
 
 .el-button {
@@ -91,19 +90,28 @@ video {
 }
 
 .captcha {
-    height: 33px;
+    height: 32px;
     width: 120px;
     border-radius: 8px;
     background-color: white;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border: none!important;
 }
 
 :deep(svg) {
     height: 30px;
     width: 120px;
+    display: block;
 }
 
-.auto_code{
- width: 80px!important;
+.auto_code {
+    width: 80px !important;
+    --el-border-radius-base: 5px 0 0 5px;
+    --el-border-color: none;
+}
+.el-input__wrapper{
+    outline: 0 !important;
 }
 </style>
   
@@ -203,18 +211,18 @@ const submitForm = (formEl) => {
 }
 
 // 验证码加载
-let captchaLoading=ref(false)
+let captchaLoading = ref(false)
 
 let getCaptcha = async () => {
-    captchaLoading.value=true
+    captchaLoading.value = true
     try {
         const res = await api.getCaptchaApi()
         // console.log(res);  
         captcha.value = res.data.img
-        captchaLoading.value=false
+        captchaLoading.value = false
     } catch (e) {
         console.log(e);
-        captchaLoading.value=false
+        captchaLoading.value = false
     }
 }
 let validateCaptchaRemote = async (captcha) => {
