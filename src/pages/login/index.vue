@@ -175,7 +175,6 @@ const submitForm = (formEl) => {
     formEl.validate(async (valid) => {
         if (valid) {
 
-            // 动画
             const loading = ElLoading.service({
                 lock: true,
                 text: '正在登陆',
@@ -210,7 +209,6 @@ const submitForm = (formEl) => {
     })
 }
 
-// 验证码加载
 let captchaLoading = ref(false)
 
 let getCaptcha = async () => {
