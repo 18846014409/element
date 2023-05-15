@@ -64,10 +64,10 @@ router.beforeEach((to, from) => {
 
 //全局后置守卫
 
-router.afterEach((to, from) => {
-    // console.log('after---to', to)
-    // console.log('after---from', from)
-})
+// router.afterEach((to, from) => {
+//     // console.log('after---to', to)
+//     // console.log('after---from', from)
+// })
 
 //使用路由
 app.use(router)
