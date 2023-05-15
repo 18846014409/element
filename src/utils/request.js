@@ -10,11 +10,13 @@ let http = axios.create({
 })
 
 
-
+// 身份验证
 http.interceptors.request.use(config => {
     // console.log('request-interceptors---', config)
     nprogress.set(0.5)
     let token = sessionStorage.getItem('tk');
+
+    config.headers.authorization=token
 
     return config
 })

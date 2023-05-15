@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 let routes = [
     {
         path: "/",
-        component: import("../pages/home/index.vue"),
+        component: () => import("../layout/layoutMain/index.vue"),
         children: [
             {
                 path: "discover",
@@ -16,9 +16,19 @@ let routes = [
             {
                 path: "welcome",
                 component: () => import("../pages/home/welcome/index.vue")
+            },
+            {
+                path:'stu',
+                component:()=>import("../pages/home/stu/index.vue"),
+                children:[
+                    {
+                        path:'product',
+                        component:()=>import("../pages/home/stu/product/index.vue"), 
+                    }
+                ]
             }
         ]
-    },
+    }, 
 
     {
         path: "/login",

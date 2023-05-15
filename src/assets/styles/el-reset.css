@@ -1,0 +1,10 @@
+/* 这个文件的样式 专门用于重置element-plus的样式 */
+
+
+/* .login-ruleForm .el-input {
+    width:500px!important;
+} */
+
+.el-table .el-table__cell {
+    z-index: unset !important;
+}
