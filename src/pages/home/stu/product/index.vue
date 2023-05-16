@@ -1,6 +1,16 @@
 <template>
+  <!-- 面包屑 -->
+  <el-breadcrumb separator="/">
+    <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+    <el-breadcrumb-item ><a href="#/stu/product">学员管理</a></el-breadcrumb-item>
+    <el-breadcrumb-item>学员项目管理</el-breadcrumb-item>
+  </el-breadcrumb>
   <!-- 搜索 -->
+  <input type="text" placeholder="请输入姓名，如果不更新，请点击右侧搜索按钮" class="input_name_search">
+  <button class="search_icon"><el-icon><Search /></el-icon></button>
+  <el-button type="warning" round class="add_project">添加项目</el-button>
   <div class="search">
+    选择班级：
       <el-select
                  v-model="searchText"
                  filterable
@@ -10,7 +20,7 @@
                  loading-text="正在加载"
                  no-match-text="搜索不到数据"
                  no-data-text="没有数据"
-                 placeholder="输入要查找的名字"
+                 placeholder="请输入要查找的班级"
                  default-first-option
                  :remote-method="handleSearch"
                  @focus="handleSearchInputFocus"
@@ -22,9 +32,10 @@
                      :value="item" />
       </el-select>
   </div>
+
   <!-- 导出表格 -->
   <div class="export-excel">
-      <el-button type="primary">导出excel</el-button>
+      <el-button type="primary" class="excel_button"><el-icon style="color: green;font-size: 20px;"><DocumentCopy /></el-icon>&nbsp;导出excel</el-button>
   </div>
   <!-- 表格 -->
   <div class="dataTable">
@@ -36,7 +47,7 @@
             <!-- 插槽作用域 -->
               <template #default="{ row, $index }">
                   <el-image
-                            style="width: 70px; height: 70px"
+                            style="width: 50px; height: 50px; border-radius:8px"
                             :src="previewImgList[$index]"
                             :zoom-rate="1.2"
                             :preview-src-list="previewImgList"
@@ -48,11 +59,11 @@
           <el-table-column align="center" prop="class" label="班级" width="100"/>
           <el-table-column align="center" prop="degree" label="学历" width="100"/>
           <el-table-column align="center" prop="productUrl" label="项目" width="100"/>
-          <el-table-column align="center" prop="cTime" label="创建时间" />
+          <el-table-column align="center" prop="cTime" label="创建时间" width="250"/>
           <el-table-column align="center" label="操作">
-              <el-button>查看</el-button>
-              <el-button type="primary">编辑</el-button>
-              <el-button type="danger">删除</el-button>
+              <el-button type="success"><el-icon><View /></el-icon>&nbsp;查看</el-button>
+              <el-button type="warning"><el-icon><EditPen /></el-icon>&nbsp;编辑</el-button>
+              <el-button type="danger"><el-icon><Delete /></el-icon>&nbsp;删除</el-button>
           </el-table-column>
       </el-table>
   </div>
@@ -137,9 +148,6 @@ watch(stuList, (newVal) => {
   console.log(previewImgList)
 })
 
-
-//钩子,在组件加载之后要处理的业务
-
 onMounted(() => {
   //获取表格
   getStuList(fetchTableListParam)
@@ -147,7 +155,59 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.search .el-select :deep(.el-input__wrapper) {
-  width: 300px;
+
+/* 面包屑 */
+.el-breadcrumb{
+  margin: 20px 0 30px 0;
 }
+/* 表格 */
+.search .el-select :deep(.el-input__wrapper) {
+  width: 200px;
+}
+.export-excel{
+float: right;
+margin-bottom: 10px;
+}
+.excel_button{
+  background-color: #fff!important;
+  color: black!important;
+  border: 1px solid #dcdfe6;
+}
+/* 搜索 */
+.input_name_search{
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  height: 32px;
+  line-height: 32px;
+  width: 300px;
+  margin-bottom: 30px;
+  padding: 0 20px 0 20px;
+}
+.input_name_search::placeholder {
+        color: #999;
+    }
+.search{
+  margin-bottom: 30px;
+}
+.search_icon{
+  background-color: #fde4c5;
+  line-height: 1;
+  text-align: center;
+  color: #ff8c00;
+  font-weight: 900;
+  cursor: pointer;
+  width: 40px;
+  height: 32px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+/* 分页 */
+.pagenation{
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
 </style>

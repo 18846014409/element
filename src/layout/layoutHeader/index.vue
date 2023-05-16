@@ -17,7 +17,7 @@
                     </div>
                 </el-col>
                 <el-col :span="16">
-                    <div class="grid-content bg-purple">登陆系统</div>
+                    <div class="grid-content bg-purple">后台系统</div>
                 </el-col>
                 <el-col :span="4">
                     <div class="grid-content bg-purple">

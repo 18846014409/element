@@ -1,5 +1,4 @@
 <template>
-     
          <!-- 菜单 -->
          <el-aside width="200px">
             <h1 class="pageLogo"></h1>
@@ -19,9 +18,9 @@
                         <span>学员管理</span>
                     </template>
                     <el-menu-item-group>
-                        <el-menu-item index="1-1" class="iconfont">&#xe64d;学员项目管理</el-menu-item>
-                        <el-menu-item index="1-2" class="iconfont">&#xe91c;学员资料</el-menu-item>
-                        <el-menu-item index="1-3" class="iconfont">&#xe60b;学员宿舍</el-menu-item>
+                        <el-menu-item index="1-1" class="iconfont">&#xe64d;&nbsp;学员项目管理</el-menu-item>
+                        <el-menu-item index="1-2" class="iconfont">&#xe91c;&nbsp;学员资料</el-menu-item>
+                        <el-menu-item index="1-3" class="iconfont">&#xe60b;&nbsp;学员宿舍</el-menu-item>
                     </el-menu-item-group>
                 </el-sub-menu>
                 <el-menu-item index="3">
@@ -111,10 +110,10 @@ const handleClose = (key: string, keyPath: string[]) => {
 }
 .el-radio-button__inner{
     position: absolute;
-    top: -34px;
+    top: -40px;
     background-color:rgba(251, 141, 24, -0.046);
     border: none;
-    font-size: 30px;
+    font-size: 48px;
     color: white;
     box-shadow: none;
     border-left: 0!important;
