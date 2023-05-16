@@ -67,8 +67,16 @@ import { ref } from 'vue'
 //     Setting,
 // } from '@element-plus/icons-vue'
 
+// let props=defineProps(['isCollapse'])
 
-const isCollapse = ref(false)
+let isCollapse = ref(false)
+
+
+
+
+
+
+
 
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)

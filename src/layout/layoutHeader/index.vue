@@ -62,6 +62,8 @@ import { ArrowDown } from '@element-plus/icons-vue'
 
 import { ref } from 'vue'
 
+// let props=defineProps(['isCollapse'])
+
 let isCollapse = ref(false)
 
 let router = useRouter()

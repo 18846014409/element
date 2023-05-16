@@ -9,8 +9,10 @@ import http from "@/utils/request"
  * @returns 
  */
 
-export const getStuListApi = (params) => http.get('/students/getstulist', {
-    params
+export const getStuListApi = (page=1,count=10,classes="") => http.get('/students/getstulist', {
+    params:{
+        page,count,class:classes
+    }
 })
 
 
@@ -38,4 +40,10 @@ export const searchStuApi = params => http.get('/students/searchstu', {
 
 //上传学员头像
 
-// export const uploadStuAvatarApi = data => http.post('/students/uploadStuAvatar', data)
+export const uploadStuAvatarApi = data => http.post('/students/uploadStuAvatar', data)
+
+// 获取班级列表
+
+export let getClassesApi=params=>http.get('/students/getclasses', {
+    params
+})
