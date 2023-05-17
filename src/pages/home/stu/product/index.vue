@@ -23,8 +23,8 @@
       </el-select>
   </div>
   <el-button class="search_icon" @click="searchList"><el-icon><Search /></el-icon></el-button>
-  <stuDialog></stuDialog>
-  <el-button type="warning" round class="add_project">添加项目</el-button>
+  <stuDialog :title="dialogTitle"></stuDialog>
+  <el-button type="warning" round class="add_project" @click="handleAddStu">添加项目</el-button>
   <!-- <div class="search_class">
     选择班级：
       <el-select
@@ -85,7 +85,7 @@
           <el-table-column align="center" prop="cTime" label="创建时间" width="250"/>
           <el-table-column align="center" label="操作">
               <el-button type="success"><el-icon><View /></el-icon>&nbsp;查看</el-button>
-              <el-button type="warning"><el-icon><EditPen /></el-icon>&nbsp;编辑</el-button>
+              <el-button type="warning" @click="handleEditStu"><el-icon><EditPen /></el-icon>&nbsp;编辑</el-button>
               <el-button type="danger"><el-icon><Delete /></el-icon>&nbsp;删除</el-button>
           </el-table-column>
       </el-table>
@@ -107,6 +107,10 @@ import * as api from "@/api/stu"
 import qee from "qf-export-excel"
 
 import stuDialog from "@/components/Dialog/index.vue"
+
+import usestuDialog from "@/store/stuDialog"
+
+let stuDialogStore =usestuDialog()
 
 let isSearch=false
 // 封装姓名搜索方法
@@ -298,6 +302,20 @@ let handleExport=()=>{
   qee(titleList,stuList.value,'学员项目导出数据')
 }
 
+let dialogTitle = ref('')
+
+// 增加学员信息
+let handleAddStu=()=>{
+  stuDialogStore.stuDialogVisible = true
+  dialogTitle.value='增加学员信息'
+}
+
+
+// 编辑学员信息
+let handleEditStu=()=>{
+  stuDialogStore.stuDialogVisible = true
+  dialogTitle.value='编辑学员信息'
+}
 
 onMounted(() => {
   //获取表格
