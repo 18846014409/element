@@ -2,7 +2,7 @@
   <!-- 搜索 -->
   <div class="search_name">
     <el-select class="search_name_input"
-                 v-model="searchName"
+                 v-model="searchText"
                  filterable
                  clearable
                  reserve-keyword
@@ -23,8 +23,9 @@
       </el-select>
   </div>
   <el-button class="search_icon" @click="searchList"><el-icon><Search /></el-icon></el-button>
+  <stuDialog></stuDialog>
   <el-button type="warning" round class="add_project">添加项目</el-button>
-  <div class="search_class">
+  <!-- <div class="search_class">
     选择班级：
       <el-select
                  v-model="searchClass"
@@ -47,11 +48,20 @@
                      :key="item.class"
                      :value="item.class"/>
       </el-select>
-  </div>
+  </div> -->
 
   <!-- 导出表格 -->
   <div class="export-excel">
-      <el-button type="primary" class="excel_button"><el-icon style="color: green;font-size: 20px;"><DocumentCopy /></el-icon>&nbsp;导出excel</el-button>
+    <el-button @click="handleExport">
+        <template #icon>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-Microsoft-Excel"></use>
+          </svg>
+        </template>
+        <template #default>
+            导出excel
+        </template>
+      </el-button>
   </div>
   <!-- 表格 -->
   <div class="dataTable">
@@ -82,54 +92,71 @@
   </div>
   <!-- 分页 -->
   <div class="pagenation">
-      <el-pagination background layout="prev, pager, next" :page-size="5" @current-change="handleSizeChange" :total="pageTotal"/>
-  </div>
+    <el-pagination background layout="prev, pager, next" @current-change="handlePageSizeChange" :page-size="fetchTableListParam.count" :current-page="fetchTableListParam.page" :total="total" />
+    </div>
 </template>
-
-
-
 
 
 
 <script setup>
 
-import { watch } from "vue"
+import { ref, onMounted, watch, reactive } from "vue"
 // 引入方法
 import * as api from "@/api/stu"
 
+import qee from "qf-export-excel"
+
+import stuDialog from "@/components/Dialog/index.vue"
+
+let isSearch=false
 // 封装姓名搜索方法
-let searchList = async (key = "", isSelect = false) => {
+let searchList = async (key = "", isSelect = false, param = { page: 1, count: 5 }) => {
+  isSearch=true
+  // console.log(isSearch);
+
+
+
+
   isSelect && (stuTableLoading.value = true)
   searchLoading.value = true;
   try {
-      let res = await api.searchStuApi({ key })
+    let res = await api.searchStuApi({ key, page: param.page, count: param.count })
       // console.log('searchlist---', res.data.data)
+      isSelect && (total.value = res.data.total)
+
       searchOptions.value = Array.from(new Set(res.data.data.map(item => item.name)))
       // console.log(searchOptionsClass.value)
-      console.log(res);
-      searchLoading.value = false;
-      isSelect && (stuList.value = res.data.data) && (stuTableLoading.value = false)
-      total.value=res.total
-  } catch (e) {
-      // console.log(e)
-      searchLoading.value = false
-  }
-}
-// 封装班级搜索方法
-let searchClassList = async (key = "", isSelect = false) => {
-  isSelect && (stuTableLoading.value = true)
-  searchLoading.value = true;
-  try {
-      let res = await api.searchStuApi({ key })
-      searchOptionsClass.value=Array.from(new Set(res.data.data.map(item => item.class)))
       // console.log(res);
       searchLoading.value = false;
-      isSelect && (stuList.value = res.data.data) && (stuTableLoading.value = false)
+      isSelect && (stuList.value = res.data.data) && (stuTableLoading.value = false)      
   } catch (e) {
       // console.log(e)
       searchLoading.value = false
   }
 }
+
+
+
+
+
+// 封装班级搜索方法 
+// let searchClassList = async (key = "") => {
+ 
+//   isSelect && (stuTableLoading.value = true)
+//   searchLoading.value = true;
+//   try {
+//       let res = await api.searchStuApi({ key,page:param.page,count:param.count })
+//       total.value=res.data.total
+
+//       searchOptionsClass.value=Array.from(new Set(res.data.data.map(item => item.class)))
+//       // console.log(res);
+//       searchLoading.value = false;
+//       isSelect && (stuList.value = res.data.data) && (stuTableLoading.value = false)
+//   } catch (e) {
+//       // console.log(e)
+//       searchLoading.value = false
+//   }
+// }
 
 
 
@@ -137,12 +164,9 @@ let searchClassList = async (key = "", isSelect = false) => {
 
 
 // 搜索
-import { ref, onMounted } from "vue"
+// let searchClass=ref('')
+let searchText = ref('')
 
-let searchClass=ref('')
-let searchName = ref('')
-// 搜索加载
-let searchLoading = ref(false);
 
 // 触发搜索方法
 let handleSearch = (input) => {
@@ -151,62 +175,59 @@ let handleSearch = (input) => {
 
 //清除模糊搜索
 let handleSearchInputFocus = () => {
-  searchOptions.value = []
-  searchOptionsClass.value=[]
+    searchOptions.value = []
+  // searchOptionsClass.value=[]
 }
 
 let searchChange = (key) => {
-  searchList(key, true)
-  searchClassList(key, true)
+  // console.log(key);
+  if(!key){
+    isSearch = false;
+    getStuList(fetchTableListParam)
+  }else{
+    fetchTableListParam.page=1
+    searchList(key, true, { page: fetchTableListParam.page, count: fetchTableListParam.count })
+    // searchClassList(key, true,{page:fetchTableListParam.page,count:fetchTableListParam.count})
+  }
 
 }
 
+
+// 搜索加载
+let searchLoading = ref(false);
+
 // 搜索的选项数据
 let searchOptions = ref([])
-let searchOptionsClass=ref([])
+// let searchOptionsClass=ref([])
 
 //---------------------------------------------分割线--------------------------------------------
 
 // 表格
-
-
 // 表格加载动画
 let stuTableLoading = ref(false)
-// 分页总条目
-let pageTotal=ref(0)
-let currentPage=ref(1)
 
-let fetchTableListParam = ref({
+let fetchTableListParam = reactive({
   page: 1,
   count: 5,
-  classes: ""
+  class: ""
 })
 
 
-// 分页的函数
-let handleSizeChange=(pageSize)=>{
-  // console.log(e);
-  fetchTableListParam.value.page=pageSize
-  getStuList()
-}
-
-
-
 // 请求表格数据
-let stuList = ref([]) 
-let getStuList = async (params=fetchTableListParam.value) => {
-  let {page,count,classes}=params
+
+let getStuList = async (param) => {
   stuTableLoading.value = true;
   try {
-      let res = await api.getStuListApi(page,count,classes)
-      stuList.value = res.data.data
-      stuTableLoading.value = false
+    let res = await api.getStuListApi(param)
+    stuList.value = res.data.data
+    total.value = res.data.total
+        stuTableLoading.value = false
 
-      pageTotal.value=res.data.total
   } catch (e) {
-      stuTableLoading = false
+    stuTableLoading = false
   }
 }
+let stuList = ref([]) 
 // getStuList()
 
 
@@ -219,25 +240,71 @@ let previewImgList = ref([])
 
 watch(stuList, (newVal) => {
   previewImgList.value = newVal.map(item => item.headimgurl ? item.headimgurl : 'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
-  // console.log(previewImgList)
+    // console.log(previewImgList)
 })
+
+//---------------------------------------------分割线--------------------------------------------
+// 分页
+// 分页总条目
+let total=ref(10)
+let currentPage=ref(1)
+
+
+
+
+// 分页页码变化时的函数
+let handlePageSizeChange = (page) => {
+  // console.log(e);
+  fetchTableListParam.page = page;
+
+  if(isSearch){
+    searchList(searchText.value, true, { page: fetchTableListParam.page, count: fetchTableListParam.count })
+  }else{
+    getStuList(fetchTableListParam)
+  }
+  
+}
+
+//---------------------------------------------分割线--------------------------------------------
+//导出表格
+let titleList =[
+  {
+    title:'头像',
+    key:'headimgUrl'
+  },
+  {
+    title:'姓名',
+    key:'name'
+  },
+  {
+    title:'班级',
+    key:'class'
+  },
+  {
+    title:'学历',
+    key:'degree'
+  },
+  {
+    title:'项目',
+    key:'productUrl'
+  },
+  {
+    title:'创建时间',
+    key:'cTime'
+  },
+]
+
+let handleExport=()=>{
+  qee(titleList,stuList.value,'学员项目导出数据')
+}
+
 
 onMounted(() => {
   //获取表格
   getStuList(fetchTableListParam)
 })
 
-//---------------------------------------------分割线--------------------------------------------
-// 分页
-
-
 </script>
-
-
-
-
-
-
 
 
 
@@ -257,11 +324,7 @@ onMounted(() => {
 float: right;
 margin-bottom: 10px;
 }
-.excel_button{
-  background-color: #fff!important;
-  color: black!important;
-  border: 1px solid #dcdfe6;
-}
+
 /* 搜索 */
 .search_class{
   margin-bottom: 30px;

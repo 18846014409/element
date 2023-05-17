@@ -9,10 +9,8 @@ import http from "@/utils/request"
  * @returns 
  */
 
-export const getStuListApi = (page=1,count=10,classes="") => http.get('/students/getstulist', {
-    params:{
-        page,count,class:classes
-    }
+export const getStuListApi = (params) => http.get('/students/getstulist', {
+    params
 })
 
 

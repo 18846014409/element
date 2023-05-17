@@ -12,9 +12,12 @@
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.4.0",
     "element-plus": "^2.3.4",
+    "install": "^0.13.0",
+    "npm": "^9.6.6",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.36",
     "pinia-plugin-persistedstate": "^3.1.0",
+    "qf-export-excel": "^1.0.4",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
